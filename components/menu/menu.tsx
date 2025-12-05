@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Storefront } from '@phosphor-icons/react';
 import { IProduct, ProductCard } from '@/components/menu/product-card';
 import { cn } from '@/lib/utils';
 
@@ -41,7 +42,23 @@ const Menu = ({ className, isVisible }: MenuProps) => {
       )}
       aria-label="Pizza list section with internal scroll"
     >
-      <h2 className={`text-fg1 hidden px-7 py-1 text-2xl font-medium md:flex`}>{`Products`}</h2>
+      {/* Enhanced Products Header */}
+      <div className="hidden items-center gap-3 px-7 py-4 md:flex">
+        <div className="flex items-center gap-3">
+          <div className="from-primary shadow-primary/25 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br to-blue-600 shadow-lg">
+            <Storefront weight="duotone" size={22} className="text-white" />
+          </div>
+          <div>
+            <h2 className="text-foreground text-2xl font-bold tracking-tight">Our Products</h2>
+            <p className="text-muted-foreground text-sm">Discover our delicious selection</p>
+          </div>
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm font-medium">
+            {pizzas.length} items
+          </span>
+        </div>
+      </div>
 
       <div className="min-h-0 flex-1">
         <div className="scrollbar-thin h-full overflow-y-auto">
