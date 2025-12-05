@@ -11,35 +11,55 @@ interface CartItemProps {
 }
 
 const CartItem = ({ name, price, quantity, image, className }: CartItemProps) => {
+  // Ensure price is a number (may come as string from API)
+  const safePrice = Number(price) || 0;
+  const itemTotal = safePrice * quantity;
+
   return (
     <li
       className={cn(
-        `hover:bg-muted/20 flex items-center gap-3 rounded-md border border-gray-600/70 p-2`,
+        'group relative flex items-center gap-4 rounded-xl p-3',
+        // Glassmorphism background
+        'bg-card/60 backdrop-blur-sm',
+        // Modern border
+        'border border-white/15 dark:border-white/10',
+        // Subtle shadow
+        'shadow-sm',
+        // Hover effect
+        'transition-all duration-200',
+        'hover:bg-card/80 hover:shadow-md',
         className
       )}
     >
-      <div className="shrink-0 overflow-hidden rounded-md border">
+      {/* Product Image with rounded corners */}
+      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl shadow-md">
         <Image
-          src={image || '/placeholder.svg?'}
+          src={image || '/placeholder.svg'}
           alt={name}
-          width={64}
-          height={64}
-          className="h-16 w-16 object-cover"
+          fill
+          className="object-cover"
+          sizes="64px"
         />
+        {/* Quantity Badge on Image */}
+        <div className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg">
+          {quantity}
+        </div>
       </div>
 
+      {/* Item Details */}
       <div className="min-w-0 flex-1">
-        <div className="truncate font-medium">{name}</div>
-        <div className="text-muted-foreground mt-1 flex gap-5 text-sm">
-          <div className={`flex gap-2`}>
-            <span>Price:</span>
-            <span className="text-foreground">{String(price)}</span>
-          </div>
-          <div className={`flex gap-2`}>
-            <span>Quantity:</span>
-            <span className="text-foreground">{quantity}</span>
-          </div>
+        <h4 className="truncate font-semibold tracking-tight text-foreground">{name}</h4>
+        <div className="mt-1 flex items-center gap-3">
+          <span className="text-sm text-muted-foreground">
+            ${safePrice.toFixed(2)} × {quantity}
+          </span>
         </div>
+      </div>
+
+      {/* Item Total */}
+      <div className="shrink-0 text-right">
+        <div className="text-lg font-bold text-foreground">${itemTotal.toFixed(2)}</div>
+        <div className="text-xs text-muted-foreground">subtotal</div>
       </div>
     </li>
   );

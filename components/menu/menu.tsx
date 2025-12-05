@@ -36,7 +36,7 @@ const Menu = ({ className, isVisible }: MenuProps) => {
   return (
     <section
       className={cn(
-        `scrollbar-thin flex h-screen flex-col overflow-hidden pt-[100px]`,
+        `scrollbar-thin flex h-screen flex-col overflow-hidden`,
         !isVisible && 'opacity-0',
         className
       )}
