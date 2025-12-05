@@ -41,16 +41,16 @@ const CartItem = ({ name, price, quantity, image, className }: CartItemProps) =>
           sizes="64px"
         />
         {/* Quantity Badge on Image */}
-        <div className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg">
+        <div className="bg-primary text-primary-foreground absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold shadow-lg">
           {quantity}
         </div>
       </div>
 
       {/* Item Details */}
       <div className="min-w-0 flex-1">
-        <h4 className="truncate font-semibold tracking-tight text-foreground">{name}</h4>
+        <h4 className="text-foreground truncate font-semibold tracking-tight">{name}</h4>
         <div className="mt-1 flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">
+          <span className="text-muted-foreground text-sm">
             ${safePrice.toFixed(2)} × {quantity}
           </span>
         </div>
@@ -58,8 +58,8 @@ const CartItem = ({ name, price, quantity, image, className }: CartItemProps) =>
 
       {/* Item Total */}
       <div className="shrink-0 text-right">
-        <div className="text-lg font-bold text-foreground">${itemTotal.toFixed(2)}</div>
-        <div className="text-xs text-muted-foreground">subtotal</div>
+        <div className="text-foreground text-lg font-bold">${itemTotal.toFixed(2)}</div>
+        <div className="text-muted-foreground text-xs">subtotal</div>
       </div>
     </li>
   );
