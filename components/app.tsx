@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Room, RoomEvent } from 'livekit-client';
 import { motion } from 'motion/react';
 import { RoomAudioRenderer, RoomContext, StartAudio } from '@livekit/components-react';
 import { toastAlert } from '@/components/alert-toast';
+import { OrderSuccessModal } from '@/components/modal/order-success-modal';
 import { SessionView } from '@/components/session-view';
 import { Toaster } from '@/components/ui/sonner';
 import { Welcome } from '@/components/welcome';
@@ -25,11 +26,17 @@ export function App({ appConfig }: AppProps) {
   const room = useMemo(() => new Room(), [sessionId]);
   const [sessionStarted, setSessionStarted] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [showOrderSuccess, setShowOrderSuccess] = useState(false);
   const { connectionDetails, refreshConnectionDetails } = useConnectionDetails();
 
-  const onOrderCompleted = () => {
+  const onOrderCompleted = useCallback(() => {
     setCart([]);
-  };
+    setShowOrderSuccess(true);
+  }, []);
+
+  const handleCloseOrderSuccess = useCallback(() => {
+    setShowOrderSuccess(false);
+  }, []);
 
   useEffect(() => {
     const onDisconnected = () => {
@@ -52,7 +59,7 @@ export function App({ appConfig }: AppProps) {
       room.off(RoomEvent.Disconnected, onDisconnected);
       room.off(RoomEvent.MediaDevicesError, onMediaDevicesError);
     };
-  }, [room, refreshConnectionDetails]);
+  }, [room, refreshConnectionDetails, onOrderCompleted]);
 
   useEffect(() => {
     async function connectRoom() {
@@ -130,6 +137,10 @@ export function App({ appConfig }: AppProps) {
           cart={cart}
         />
       </RoomContext.Provider>
+
+      {/* Order Success Modal */}
+      <OrderSuccessModal isOpen={showOrderSuccess} onClose={handleCloseOrderSuccess} />
+
       <Toaster />
     </>
   );
